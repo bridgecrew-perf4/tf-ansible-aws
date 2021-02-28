@@ -8,7 +8,7 @@ sudo aws s3 sync s3://wp-content-terraform-bucket /var/www/your_domain/wordpress
 * * * * * aws s3 sync /var/www/your_domain/wordpress/wp-content s3://wp-content-terraform-bucket
 
 
-![alt text](https://github.com/hanov/tf-ansible-aws/blob/master/image.jpg?raw=true)
+![alt text](https://github.com/hanov/tf-ansible-aws/blob/master/aws.jpg?raw=true)
 
 variables 
  - wp-content-terraform-bucket
