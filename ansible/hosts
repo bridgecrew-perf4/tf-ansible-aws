@@ -1,0 +1,11 @@
+[front]
+server_green ansible_host=10.0.2.151 ansible_user=ubuntu ansible_ssh_common_args='-o ProxyCommand="ssh -W %h:%p -q ubuntu@52.58.199.78"'
+#server_blue ansible_host=10.0.2.136 ansible_user=ubuntu ansible_ssh_common_args='-o ProxyCommand="ssh -W %h:%p -q ubuntu@52.58.199.78"'
+
+[jump]
+jumpbox ansible_host=10.0.2.151 ansible_user=ubuntu 
+
+#[servers:vars]
+#ansible_python_interpreter=/usr/bin/python3
+#ansible_ssh_common_args: '-o "ProxyCommand ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -i ~/.ssh/id_rsa -W %h:%p ubuntu@52.58.199.78"'
+#ansible_ssh_common_args: '-o ProxyCommand="ssh -W %h:%p -q ubuntu@52.58.199.78"'
