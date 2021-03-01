@@ -69,15 +69,6 @@
       notify: Restart Apache
       tags: [ apache ]
 
-
-  # UFW Configuration
-    - name: "UFW - Allow HTTP on port {{ http_port }}"
-      ufw:
-        rule: allow
-        port: "{{ http_port }}"
-        proto: tcp
-      tags: [ system ]
-
   # WordPress Configuration
     - name: Download and unpack latest WordPress
       unarchive:

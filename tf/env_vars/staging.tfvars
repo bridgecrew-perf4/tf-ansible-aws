@@ -11,7 +11,7 @@ env = "staging"
 
 # 16gb 4vcpu t3a.xlarge
 # 32gb 8vcpu t3a.2xlarge
-instance_type = "t3a.xlarge"
+instance_type = "t3a.large"
 
 
 # aws --profile home ec2 import-key-pair --key-name "user-personal-key" --public-key-material fileb://$HOME/.ssh/id_rsa.pub
@@ -27,7 +27,8 @@ s3_bucket = "wp-data-staging-202003270001"
 
 # db.r6g.large	-	cpu 2	ram 16
 # db.r6g.16xlarge	- cppu	64	ram 512
-rds_instance_type = "db.r6g.large"
+# db.t3.xlarge vcpu  4 ram 16 
+rds_instance_type = "db.t3.xlarge"
 
 rds_db_size = 100
 rds_db_name = "wpdb"

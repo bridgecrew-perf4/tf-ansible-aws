@@ -92,50 +92,17 @@ jumpbox_ip = 52.59.244.211
 rds_endpoint = terraform-20210228221713366700000001.cvqrmnslrfgx.eu-central-1.rds.amazonaws.com:3306
 ```
 
-7. [TODO] implement tempalte generation for ansible variable and hosts inventory 
-
-8. Since 7th item is not here yet we need to manually edit inventory and variables
+7. fetch variables from terraform to ansible hosts ans vars
 ```
-cat ansible/hosts
-[front]
-server_green ansible_host=10.0.2.56 ansible_user=ubuntu ansible_ssh_common_args='-o ProxyCommand="ssh -W %h:%p -q ubuntu@52.59.244.211"'
-#server_blue ansible_host=10.0.2.237 ansible_user=ubuntu ansible_ssh_common_args='-o ProxyCommand="ssh -W %h:%p -q ubuntu@52.59.244.211"'
+./ansible_pre_deploy.sh
 
-[jump]
-jumpbox ansible_host=52.59.244.211 ansible_user=ubuntu
-```
-
-9. Edit ansible vars from tf/env_vars/default.tfvars
-```
-cat tf/env_vars/default.tfvars
-
-is_production = false
-aws_region = "eu-central-1"
-aws_profile = "home"
-env = "sandbox"
-
-# 4gb 2vcpu 
-instance_type = "t3a.medium"
-
-# aws --profile home ec2 import-key-pair --key-name "user-personal-key" --public-key-material fileb://$HOME/.ssh/id_rsa.pub
-ec2_key_name = "user-personal-key"
-
-# ubuntu 20
-ec2_ami = "ami-0502e817a62226e03"
-
-s3_bucket = "wp-data-sand-202003270001"
-
-# sand instance 
-rds_instance_type = "db.t3.micro"
-
-rds_db_size = 20
-rds_db_name = "wpdb"
-rds_db_user = "admin"
-rds_db_pass = "qwerty1234"
-```
+script will generate two files in ansible directory
+../ansible/hosts
+../ansible/vars/default.yml 
+``` 
 
 
-10. run ansible playbook
+8. run ansible playbook
 ```
 cd ansible
 ansible-playbook -i hosts playbook.yml
@@ -230,20 +197,20 @@ server_green               : ok=19   changed=11   unreachable=0    failed=0    s
 
 ```
 
-11. open alb endpoint and observe working deployment
+9. open alb endpoint and observe working deployment
 ```
 alb_address = tf-alb-53172144.eu-central-1.elb.amazonaws.com
 ```
 
 
-12. [TODO] describe seamless blue/green depyment
+10. [TODO] describe seamless blue/green depyment
 
-13. remove all resosurces
+11. remove all resosurces
 ```
 terraform destroy -var-file="env_vars/$(terraform workspace show).tfvars" 
 ```
 
-14. deploy production
+12. deploy production
 ```
 terraform workspace new production
 terraform plan -var-file="env_vars/$(terraform workspace show).tfvars" 
