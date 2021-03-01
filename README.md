@@ -1,4 +1,32 @@
 
+## Introduction:
+
+This repo is configured to provision basic AWS infrastructure and configure blue/green deployment of the wp engine. AWS VPC is designed with two subnets as shown in the picture below. All resources are placed in a private subnet for the sake of security. The only resource that can be accessed directly is the jump host. Jump host can be configured to whitelist IP for connection via security groups. It's a good practice to put jump host behind VPN. All frontend requests are routed via ALB. The database is provisioned by AWS RDS and located in the private subnet as well. The problem of persistent data is solved by syncing wp-data to the s3 bucket with crontab.  
+
+All resources are tagged and those tags can be used in the future like for example cost management. It's a good idea to know how much cost spent per environment or a specific user. 
+```
+  tags = {
+    Name = "alb ${var.env} for ${var.project}"
+    Env = var.env
+  }
+```
+
+It is feasible to provision a sandbox/staging/production environment. Sandbox and staging easy to create and destroy. Production one has constraints for accidental removal.
+```
+# s3 and rds is protected from accidental removal
+is_production = true
+
+...
+
+force_destroy = var.is_production ? false : true
+
+...
+
+deletion_protection         = var.is_production ? true : false
+```
+
+
+
 ![alt text](https://github.com/hanov/tf-ansible-aws/blob/master/aws.jpg?raw=true)
 
 
@@ -235,3 +263,8 @@ terraform apply -var-file="env_vars/$(terraform workspace show).tfvars"
 9. build the pipeline for jenkins 
 10. stream logs to cloudwatch 
 11. configure auditd on jump host
+12. fail2ban on jump host
+13. sequrity group for jump host based on vpn ip
+14. vpn server
+15. add owner to tags
+16. fault tolerancy with two private subntents in different az and multi az database.
