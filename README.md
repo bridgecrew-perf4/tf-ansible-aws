@@ -251,7 +251,7 @@ terraform apply -var-file="env_vars/$(terraform workspace show).tfvars"
 ```
 
 
-## Room for improvments:
+## Room for improvements:
 1. templater for ansible vars and hosts
 2. s3 sync for tf state file
 3. create separate ssh key for jump box
