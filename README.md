@@ -116,3 +116,132 @@ rds_db_user = "admin"
 rds_db_pass = "qwerty1234"
 ```
 
+
+10. run ansible playbook
+```
+cd ansible
+ansible-playbook -i hosts playbook.yml
+
+PLAY [jump] **************************************************************************************************************************************************************************
+
+TASK [Gathering Facts] ***************************************************************************************************************************************************************
+ok: [jumpbox]
+
+TASK [put the key on the jump box to access internal resources] **********************************************************************************************************************
+ok: [jumpbox] => (item=~/.ssh/id_rsa.pub)
+ok: [jumpbox] => (item=~/.ssh/id_rsa)
+
+PLAY [front] *************************************************************************************************************************************************************************
+
+TASK [Gathering Facts] ***************************************************************************************************************************************************************
+ok: [server_green]
+
+TASK [Install prerequisites] *********************************************************************************************************************************************************
+ok: [server_green]
+
+TASK [install awscli] ****************************************************************************************************************************************************************
+ok: [server_green]
+
+TASK [Install LAMP Packages] *********************************************************************************************************************************************************
+ok: [server_green] => (item=apache2)
+ok: [server_green] => (item=python3-pymysql)
+ok: [server_green] => (item=php)
+ok: [server_green] => (item=php-mysql)
+ok: [server_green] => (item=libapache2-mod-php)
+
+TASK [Install PHP Extensions] ********************************************************************************************************************************************************
+ok: [server_green] => (item=php-curl)
+ok: [server_green] => (item=php-gd)
+ok: [server_green] => (item=php-mbstring)
+ok: [server_green] => (item=php-xml)
+ok: [server_green] => (item=php-xmlrpc)
+ok: [server_green] => (item=php-soap)
+ok: [server_green] => (item=php-intl)
+ok: [server_green] => (item=php-zip)
+
+TASK [Create document root] **********************************************************************************************************************************************************
+ok: [server_green]
+
+TASK [Set up Apache VirtualHost] *****************************************************************************************************************************************************
+ok: [server_green]
+
+TASK [Enable rewrite module] *********************************************************************************************************************************************************
+changed: [server_green]
+
+TASK [Enable new site] ***************************************************************************************************************************************************************
+changed: [server_green]
+
+TASK [Disable default Apache site] ***************************************************************************************************************************************************
+changed: [server_green]
+
+TASK [UFW - Allow HTTP on port 80] ***************************************************************************************************************************************************
+ok: [server_green]
+
+TASK [Download and unpack latest WordPress] ******************************************************************************************************************************************
+skipping: [server_green]
+
+TASK [Sync persistent data from s3] **************************************************************************************************************************************************
+[WARNING]: Consider using 'become', 'become_method', and 'become_user' rather than running sudo
+changed: [server_green]
+
+TASK [sync data folder every minute] *************************************************************************************************************************************************
+changed: [server_green]
+
+TASK [Set ownership] *****************************************************************************************************************************************************************
+changed: [server_green]
+
+TASK [Set permissions for directories] ***********************************************************************************************************************************************
+changed: [server_green]
+
+TASK [Set permissions for files] *****************************************************************************************************************************************************
+changed: [server_green]
+
+TASK [Set up wp-config] **************************************************************************************************************************************************************
+changed: [server_green]
+
+RUNNING HANDLER [Reload Apache] ******************************************************************************************************************************************************
+changed: [server_green]
+
+RUNNING HANDLER [Restart Apache] *****************************************************************************************************************************************************
+changed: [server_green]
+
+PLAY RECAP ***************************************************************************************************************************************************************************
+jumpbox                    : ok=2    changed=0    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
+server_green               : ok=19   changed=11   unreachable=0    failed=0    skipped=1    rescued=0    ignored=0   
+
+
+```
+
+11. open alb endpoint and observe working deployment
+```
+alb_address = tf-alb-53172144.eu-central-1.elb.amazonaws.com
+```
+
+
+12. [TODO] describe seamless blue/green depyment
+
+13. remove all resosurces
+```
+terraform destroy -var-file="env_vars/$(terraform workspace show).tfvars" 
+```
+
+14. deploy production
+```
+terraform workspace new production
+terraform plan -var-file="env_vars/$(terraform workspace show).tfvars" 
+terraform apply -var-file="env_vars/$(terraform workspace show).tfvars" 
+```
+
+
+## Room for improvments:
+1. templater for ansible vars and hosts
+2. s3 sync for tf state file
+3. create separate ssh key for jump box
+4. wrap tf files to modules
+5. implement secret managment for credentails
+6. golden ami preparation 
+7. aws launch templpate creation
+8. configuring autoscaling group
+9. dockerized version
+10. stream logs to cloudwatch 
+11. configure auditd on jump host
