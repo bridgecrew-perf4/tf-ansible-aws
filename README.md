@@ -1,16 +1,6 @@
 
 ![alt text](https://github.com/hanov/tf-ansible-aws/blob/master/aws.jpg?raw=true)
 
-variables 
- - wp-content-terraform-bucket
- - mysql host 
- - mysql pass
-
-
-
-
- make tags
-
 
 ## Prerequisites:
 1. installed aws cli
@@ -240,8 +230,8 @@ terraform apply -var-file="env_vars/$(terraform workspace show).tfvars"
 4. wrap tf files to modules
 5. implement secret managment for credentails
 6. golden ami preparation 
-7. aws launch templpate creation
+7. aws launch template creation
 8. configuring autoscaling group
-9. dockerized version
+9. build the pipeline for jenkins 
 10. stream logs to cloudwatch 
 11. configure auditd on jump host
