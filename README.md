@@ -219,7 +219,7 @@ terraform apply -var-file="env_vars/$(terraform workspace show).tfvars"
 
 
 ## Room for improvements:
-1. templater for ansible vars and hosts
+1. [done] templater for ansible vars and hosts
 2. s3 sync for tf state file
 3. create separate ssh key for jump box
 4. wrap tf files to modules
@@ -235,3 +235,4 @@ terraform apply -var-file="env_vars/$(terraform workspace show).tfvars"
 14. vpn server
 15. add owner to tags
 16. fault tolerancy with two private subntents in different az and multi az database.
+17. cert manager to handle https requests
