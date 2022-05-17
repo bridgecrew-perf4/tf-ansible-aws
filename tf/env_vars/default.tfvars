@@ -6,18 +6,19 @@ aws_region = "eu-central-1"
 
 aws_profile = "home"
 
-#project = "wordpress-tf-deplyment"
+project = "cassandra-plain"
 
-env = "sandbox"
+env = "sandbox-cassandra-plain"
 
 # 4gb 2vcpu 
 instance_type = "t3a.medium"
 
 # aws --profile home ec2 import-key-pair --key-name "user-personal-key" --public-key-material fileb://$HOME/.ssh/id_rsa.pub
+# paycasso_2016
 ec2_key_name = "user-personal-key"
 
-# ubuntu 20
-ec2_ami = "ami-0502e817a62226e03"
+
+ec2_ami = "ami-09439f09c55136ecf"
 
 
 s3_bucket = "wp-data-sand-202003270001"

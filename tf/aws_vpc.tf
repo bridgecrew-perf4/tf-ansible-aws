@@ -16,7 +16,7 @@ resource "aws_subnet" "pub_subnet" {
   vpc_id                  = aws_vpc.vpc.id
   cidr_block              = "10.0.1.0/24"
   map_public_ip_on_launch = "true"
-  availability_zone       = "eu-central-1a"
+  availability_zone       = "${var.aws_region}a"
 
   tags = {
     Name = "public_subnet for ${var.project}"
@@ -70,7 +70,7 @@ resource "aws_subnet" "priv_subnet" {
   vpc_id                  = aws_vpc.vpc.id
   cidr_block              = "10.0.2.0/24"
   map_public_ip_on_launch = "false"
-  availability_zone       = "eu-central-1b"
+  availability_zone       = "${var.aws_region}b"
   #availability_zone = data.aws_availability_zones.available.names[1]
 
 
