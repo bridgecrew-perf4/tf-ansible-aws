@@ -44,13 +44,13 @@
       yum:
         name: cassandra
 
-    - name: rm cassandra data
+    - name: systemctl enable cassandra
       command: sudo systemctl enable cassandra
 
     - name: stop cassandra service
       service: name=cassandra state=stopped
 
-    - name: rm cassandra data
+    - name: rm cassandra data /var/lib/cassandra/*
       command: sudo rm -rf /var/lib/cassandra/*
 
     - name: copy cassandra.yaml
@@ -67,6 +67,13 @@
 
     - name: enabled cassandra service
       service: name=cassandra state=started
+
+    - name: Pause for 30 sec to build app cache
+      pause:
+        seconds: 30
+
+    - name: nodetool enablebinary
+      command: nodetool enablebinary
 
 # sudo rm -rf /var/lib/cassandra/*
 
